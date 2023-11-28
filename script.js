@@ -9,40 +9,46 @@ let postsArray = [];
 function getPosts(callback) {
   fetch('https://dummyjson.com/posts')
     .then(res => res.json())
-    .then(function(json) {
+    .then(function (json) {
       callback(json.posts);
     });
 }
 
-
+//Renderar Posts
 function renderPosts(posts) {
-  for(let i = 0; i < posts.length; i++) {
-    postsArray.push(posts[i]);
+  for (let i = 0; i < posts.length; i++) {
+   postsArray.push(posts[i]);
 
-    let div = document.createElement("div");
-    div.classList.add("posts");
-    postContainer.append(div);
-    
+    let divContainer = document.createElement("div");
+    divContainer.classList.add("posts");
+    postContainer.append(divContainer);
+
+    let titleDiv = document.createElement("div");
+    titleDiv.classList.add("title");
+    divContainer.append(titleDiv);
+
     let h2 = document.createElement("h2");
-    h2.classList.add("title");
-    div.append(h2);
+    titleDiv.append(h2);
 
     let pBody = document.createElement("p");
     pBody.classList.add("content");
-    div.append(pBody);
+    divContainer.append(pBody);
+
+    let tagDiv = document.createElement("div");
+    tagDiv.classList.add("div-tag");
+    titleDiv.append(tagDiv);
+
 
     h2.innerText = postsArray[i].title;
-    
+
     pBody.innerText = postsArray[i].body;
-  }
-}
+
+    tagDiv.innerText = "Tags: " + postsArray[i].tags;
 
 
-// Renderar de 5 nyaste inläggen under "Latest posts" på vänster sida.
-function renderLatest(posts) {
-  for(let i = 0; i < 5 ; i++) {
-    postsArray.push(posts[i].title);
 
+
+    //Renderar de senaste 5 inläggen under "Latest posts" på vänster sida.
     let pLatest = document.createElement("p");
     pLatest.classList.add("left-titles");
     postsTitle.append(pLatest);
@@ -54,7 +60,6 @@ function renderLatest(posts) {
 
 getPosts(renderPosts);
 
-getPosts(renderLatest);
 
 
 

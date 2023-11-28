@@ -1,18 +1,18 @@
-*{
+* {
   margin: 0;
   padding: 0;
   font-family: 'Poppins', sans-serif;
 }
 
-body{
+body {
   background-color: #3A4D39;
 }
 
-header{
+header {
   margin-bottom: 1rem;
 }
 
-nav{
+nav {
   height: 3rem;
   display: flex;
   border: 1px solid black;
@@ -21,52 +21,55 @@ nav{
   align-items: center;
 }
 
-#search{
+.input {
   height: 2rem;
   border: none;
   border-radius: 5px;
   background-color: #739072;
 }
 
-::placeholder{
+
+::placeholder {
   padding: 1rem;
   color: white;
 }
 
-ul{
+ul {
   display: flex;
   list-style-type: none;
   text-decoration: none;
   gap: 3rem;
 }
 
-.ul-item{
+.ul-item {
   color: black;
 }
 
-a{
+a {
   text-decoration: none;
 }
 
-main{
+main {
   display: flex;
   justify-content: space-around;
 }
 
-.create-post{
+.create-post {
   border: 1px solid black;
   width: 30rem;
   height: 4rem;
   border-radius: 5px;
 }
 
-.center{
+.center {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.posts{
+.posts {
+  display: flex;
+  flex-direction: column;
   border: 1px solid black;
   border-radius: 5px;
   width: 30rem;
@@ -74,17 +77,17 @@ main{
   margin-top: 1rem;
 }
 
-.title{
+.title {
   border-bottom: 1px solid black;
   height: auto;
   padding: 1rem;
-} 
+}
 
 .content {
   padding: 1rem;
 }
 
-.left{
+.left {
   border: 1px solid black;
   height: 20rem;
   width: 10rem;
@@ -96,27 +99,37 @@ main{
   overflow-y: scroll;
 }
 
-#posts-title{
+#posts-title {
   height: auto;
 }
 
-.left-titles{
+.left-titles {
   margin-bottom: 1rem;
   border-bottom: 1px solid black;
 }
 
-.right{
+.right {
   border: 1px solid black;
   width: 10rem;
-  height: 20rem;
+  height: 23rem;
   margin-top: 5.5rem;
   padding: 1rem;
   border-radius: 5px;
 }
 
-footer{
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+footer {
   margin-top: 1rem;
   height: 5rem;
   background-color: black;
 }
 
+.div-tag{
+  display: flex;
+  margin-left: auto;
+}

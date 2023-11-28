@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,41 +12,53 @@
   <title>Document</title>
   <script src="script.js" defer></script>
 </head>
+
 <body>
 
   <header>
     <nav>
       <ul>
-        <a href="#"><li class="ul-item">Logo</li></a> <!--Ändra till en "riktig logga!"-->
-        <a href="#"><li class="ul-item"><i class="fa-solid fa-house fa-lg"></i></li></a>
+        <a href="#">
+          <li class="ul-item">Logo</li>
+        </a> <!--Ändra till en "riktig logga!"-->
+        <a href="#">
+          <li class="ul-item"><i class="fa-solid fa-house fa-lg"></i></li>
+        </a>
         <li class="ul-items"><i class="fa-solid fa-magnifying-glass fa-lg"></i></li>
-        <input id="search" type="text" placeholder="Search">
-        <a href="#"><li class="ul-item">Account #2BC6</li></a>
+        <input class="input" type="text" placeholder="Search">
+        <a href="#">
+          <li class="ul-item">Account #2BC6</li>
+        </a>
 
         <li class="ul-item"></li>
       </ul>
     </nav>
   </header>
 
-  
 
-    <div class="center">
-      <section class="create-post"></section>
-    </div>
   <main id="main">
-    
+
     <aside class="left">
       <h3>Latest posts</h3>
-      <div id="posts-title"></div> <!--Ha inläggets titel?-->
+      <div id="posts-title"></div> <!--Göra så att man kan trycka på dom?-->
     </aside>
 
     <section id="post-container"></section>
 
-    <aside class="right"></aside>
+    <aside class="right">
+      <h3>Create post</h3>
+      <form>
+        <input class="input" type="text" placeholder="Title">
+        <input class="input" type="text" placeholder="Tags">
+        <textarea name="" id="" cols="30" rows="10"></textarea>
+        <input type="submit" value="Post">
+      </form>
+    </aside>
   </main>
 
   <footer></footer>
 
-  
+
 </body>
+
 </html>
