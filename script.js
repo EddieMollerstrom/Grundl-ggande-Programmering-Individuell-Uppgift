@@ -15,8 +15,10 @@ function getPosts(callback) {
     });
 }
 
+
 //Renderar Posts
 function renderPosts(posts) {
+  postContainer.innerHTML = "";
   for (let i = 0; i < posts.length; i++) {
     postsArray.push(posts[i]);
 
@@ -43,15 +45,33 @@ function renderPosts(posts) {
     reactBtn.innerText = postsArray[i].reactions;
 
 
-    reactBtn.addEventListener("click", function(){
+    let localSave = localStorage.getItem(`reactions${i}`);
+    if (localSave !== null) {
+      postsArray[i].reactions = parseInt(localSave, 10);
+      reactBtn.innerText = postsArray[i].reactions;
+    }
+
+    function reactBtnInc() {
       postsArray[i].reactions++;
       reactBtn.innerText = postsArray[i].reactions;
-    });
+      localStorage.setItem(`reactions${i}`, postsArray[i].reactions);
+      reactBtn.removeEventListener("click", reactBtnInc);
+      reactBtn.addEventListener("click", reactBtnDec);
+    }
+
+    function reactBtnDec() {
+      postsArray[i].reactions--;
+      reactBtn.innerText = postsArray[i].reactions;
+      reactBtn.removeEventListener("click", reactBtnDec);
+      reactBtn.addEventListener("click", reactBtnInc);
+    }
+
+    reactBtn.addEventListener("click", reactBtnInc);
   }
 }
 
 
-function inputBtnFunc() {
+function createPost() {
   //Ifall fälten är tomma skapar den inte en ny post.
   if (inputTitle.value === "" || inputBody.value === "" || inputTags.value === "") {
     return;
@@ -62,33 +82,59 @@ function inputBtnFunc() {
   let h2 = document.createElement("h2");
   let pBody = document.createElement("p");
   let tagDiv = document.createElement("div");
+  let reactBtn = document.createElement("button");
+  let interactions = 0;
+
+  localStorage.setItem("title", inputTitle.value);
+  localStorage.setItem("body", inputBody.value);
+  localStorage.setItem("tag", inputTags.value);
 
   divContainer.classList.add("posts");
   titleDiv.classList.add("title");
   pBody.classList.add("content");
   tagDiv.classList.add("div-tag");
+  reactBtn.classList.add("react-btn");
 
   postContainer.append(divContainer);
-  divContainer.append(titleDiv, pBody);
+  divContainer.append(titleDiv, pBody, reactBtn);
   titleDiv.append(h2, tagDiv);
 
-  h2.innerText = inputTitle.value;
-  pBody.innerText = inputBody.value;
-  tagDiv.innerText = "Tags: " + inputTags.value;
+  h2.innerText = localStorage.getItem("title");
+  pBody.innerText = localStorage.getItem("body");
+  tagDiv.innerText = "Tags: " + localStorage.getItem("tag");
+  reactBtn.innerText = interactions;
 
   //Gör så att posten man skapar kommer längst upp
   postContainer.insertBefore(divContainer, postContainer.firstChild);
 
+  //Gör så att fälten är tomma efter att man har skapat ett inlägg
   inputTitle.value = "";
   inputBody.value = "";
   inputTags.value = "";
+
+  function reactBtnInc() {
+    interactions++;
+    reactBtn.innerText = interactions;
+    reactBtn.removeEventListener("click", reactBtnInc);
+    reactBtn.addEventListener("click", reactBtnDec);
+  }
+
+  function reactBtnDec() {
+    interactions--;
+    reactBtn.innerText = interactions;
+    reactBtn.removeEventListener("click", reactBtnDec);
+    reactBtn.addEventListener("click", reactBtnInc);
+  }
+
+  reactBtn.addEventListener("click", reactBtnInc);
 }
+
+
 
 //Renderar de senaste 5 inläggen under "Latest posts" på vänster sida.
 function renderFiveLatest(posts) {
   for (let i = 0; i < 5; i++) {
     postsArray.push(posts[i].title);
-
     let pLatest = document.createElement("p");
     pLatest.classList.add("left-titles");
     postsTitle.append(pLatest);
@@ -99,10 +145,12 @@ function renderFiveLatest(posts) {
 
 getPosts(renderPosts);
 getPosts(renderFiveLatest);
-inputBtn.addEventListener("click", inputBtnFunc)
+inputBtn.addEventListener("click", createPost)
 
 
 
+
+//localStorage.clear();
 
 
 
