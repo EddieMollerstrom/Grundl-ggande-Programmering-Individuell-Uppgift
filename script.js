@@ -15,13 +15,11 @@ function getPosts(callback) {
     });
 }
 
-
 //Renderar Posts
 function renderPosts(posts) {
   postContainer.innerHTML = "";
-  for (let i = 0; i < posts.length; i++) {
-    postsArray.push(posts[i]);
-
+  postsArray.push(...posts); // Lägg till nya inlägg
+  for (let i = 0; i < postsArray.length; i++) {
     let divContainer = document.createElement("div");
     let titleDiv = document.createElement("div");
     let h2 = document.createElement("h2");
@@ -44,7 +42,7 @@ function renderPosts(posts) {
     tagDiv.innerText = "Tags: " + postsArray[i].tags;
     reactBtn.innerText = postsArray[i].reactions;
 
-
+    //Sparar reactions variablen
     let localSave = localStorage.getItem(`reactions${i}`);
     if (localSave !== null) {
       postsArray[i].reactions = parseInt(localSave, 10);
@@ -70,12 +68,34 @@ function renderPosts(posts) {
   }
 }
 
+// Sparar till local storage
+function saveToLocalStorage() {
+  localStorage.setItem("postsArray", JSON.stringify(postsArray));
+}
+
+// Hämtar från local storage
+function loadFromLocalStorage() {
+  const storedPosts = localStorage.getItem("postsArray");
+  if (storedPosts) {
+    postsArray = JSON.parse(storedPosts);
+  }
+}
 
 function createPost() {
-  //Ifall fälten är tomma skapar den inte en ny post.
+  // Ifall fälten är tomma skapar den inte en ny post.
   if (inputTitle.value === "" || inputBody.value === "" || inputTags.value === "") {
     return;
   }
+
+  //gör inlägget till ett objekt för local storage
+  let createPostObjekt = {
+    title: inputTitle.value,
+    body: inputBody.value,
+    tags: inputTags.value,
+    reactions: 0,
+  }
+
+  postsArray = [createPostObjekt];
 
   let divContainer = document.createElement("div");
   let titleDiv = document.createElement("div");
@@ -83,11 +103,6 @@ function createPost() {
   let pBody = document.createElement("p");
   let tagDiv = document.createElement("div");
   let reactBtn = document.createElement("button");
-  let interactions = 0;
-
-  localStorage.setItem("title", inputTitle.value);
-  localStorage.setItem("body", inputBody.value);
-  localStorage.setItem("tag", inputTags.value);
 
   divContainer.classList.add("posts");
   titleDiv.classList.add("title");
@@ -95,63 +110,25 @@ function createPost() {
   tagDiv.classList.add("div-tag");
   reactBtn.classList.add("react-btn");
 
-  postContainer.append(divContainer);
+  postContainer.prepend(divContainer);
   divContainer.append(titleDiv, pBody, reactBtn);
   titleDiv.append(h2, tagDiv);
 
-  h2.innerText = localStorage.getItem("title");
-  pBody.innerText = localStorage.getItem("body");
-  tagDiv.innerText = "Tags: " + localStorage.getItem("tag");
-  reactBtn.innerText = interactions;
+  h2.innerText = createPostObjekt.title;
+  pBody.innerText = createPostObjekt.body;
+  tagDiv.innerText = "Tags: " + createPostObjekt.title;
+  reactBtn.innerText = createPostObjekt.reactions;
 
-  //Gör så att posten man skapar kommer längst upp
-  postContainer.insertBefore(divContainer, postContainer.firstChild);
-
-  //Gör så att fälten är tomma efter att man har skapat ett inlägg
+  // Gör så att fälten är tomma efter att man har skapat ett inlägg
   inputTitle.value = "";
   inputBody.value = "";
   inputTags.value = "";
 
-  function reactBtnInc() {
-    interactions++;
-    reactBtn.innerText = interactions;
-    reactBtn.removeEventListener("click", reactBtnInc);
-    reactBtn.addEventListener("click", reactBtnDec);
-  }
-
-  function reactBtnDec() {
-    interactions--;
-    reactBtn.innerText = interactions;
-    reactBtn.removeEventListener("click", reactBtnDec);
-    reactBtn.addEventListener("click", reactBtnInc);
-  }
-
-  reactBtn.addEventListener("click", reactBtnInc);
+  saveToLocalStorage();
 }
 
-
-
-//Renderar de senaste 5 inläggen under "Latest posts" på vänster sida.
-function renderFiveLatest(posts) {
-  for (let i = 0; i < 5; i++) {
-    postsArray.push(posts[i].title);
-    let pLatest = document.createElement("p");
-    pLatest.classList.add("left-titles");
-    postsTitle.append(pLatest);
-
-    pLatest.innerText = postsArray[i].title;
-  }
-}
 
 getPosts(renderPosts);
-getPosts(renderFiveLatest);
+loadFromLocalStorage();
+
 inputBtn.addEventListener("click", createPost)
-
-
-
-
-//localStorage.clear();
-
-
-
-
